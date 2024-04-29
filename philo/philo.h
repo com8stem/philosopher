@@ -6,4 +6,7 @@
 # include <pthread.h>
 # include <stdbool.h>
 
+bool	check_arg(int argc, char **argv);
+
+
 #endif
