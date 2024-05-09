@@ -67,13 +67,13 @@ void	set_fork(t_philo *philo, pthread_mutex_t *forks, int position)
 	philo_nbr = philo->table->num_of_philo;
 	// if (philo->id % 2 == 0)
 	// {
-		philo->first_fork = &forks[position];
-		philo->second_fork = &forks[(position + 1) % philo_nbr];
+		philo->left_fork = &forks[position];
+		philo->right_fork = &forks[(position + 1) % philo_nbr];
 	// }
 	// else
 	// {
-	// 	philo->first_fork = &forks[(position + 1) % philo_nbr];
-	// 	philo->second_fork = &forks[position];
+	// 	philo->left_fork = &forks[(position + 1) % philo_nbr];
+	// 	philo->right_fork = &forks[position];
 	// }
 }
 
@@ -110,6 +110,9 @@ void	init_philo(char **argv, t_table *info)
 		info->num_of_must_eat = atoi(argv[5]);
 	else
 		info->num_of_must_eat = -1;
+	pthread_mutex_init(&info->death, NULL);
+	pthread_mutex_init(&info->eat, NULL);
+	pthread_mutex_init(&info->timing, NULL);
 	// if (!check_t_philo(info))
 	// 	return ;
 	// info->philos = (t_philo *)malloc(sizeof(t_philo) * info->num_of_philo);
@@ -120,11 +123,10 @@ void	init_philo(char **argv, t_table *info)
 	i = 0;
 	while (i < info->num_of_philo)
 	{
-		printf("[===============%d]\n", i);
-		fflush(stdout);
-		pthread_mutex_init(&(info->forks[i]), NULL);
+		// printf("[===============%d]\n", i);
+		// fflush(stdout);
+		pthread_mutex_init(&info->forks[i], NULL);
 		i++;
 	}
 	philo_init(info);
 }
-

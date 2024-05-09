@@ -19,8 +19,9 @@ typedef struct s_philo
 	long		meal_count;
 	bool		full;
 	long		last_meal_time;
-	pthread_mutex_t		*first_fork;
-	pthread_mutex_t		*second_fork;
+	bool		dead;
+	pthread_mutex_t		*left_fork;
+	pthread_mutex_t		*right_fork;
 	pthread_t	thread_id;
 	t_table		*table;
 }	t_philo;
@@ -36,6 +37,10 @@ typedef struct s_table
 	bool		end_flag;
 	pthread_mutex_t		forks[200];
 	t_philo		philos[200];
+	pthread_mutex_t		eat;
+	pthread_mutex_t		death;
+	pthread_mutex_t		timing;
+	pthread_t	supreviser;
 }				t_table;
 
 bool	check_arg(int argc, char **argv);
@@ -50,5 +55,15 @@ void print_forks(t_philo *philo);
 void	start_dinner(t_table *info);
 
 long	get_time(void);
+
+void	*life_of_philo(void *philo_ptr);
+
+void	time_sleep(int time);
+
+void	end_dinner(t_table *info);
+
+void	*monitor_philo(void *info_arg);
+
+
 
 #endif

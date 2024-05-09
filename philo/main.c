@@ -8,5 +8,6 @@ int	main(int argc, char **argv)
 		return (printf("argerror\n"));
 	init_philo(argv, &info);
 	start_dinner(&info);
+	end_dinner(&info);
 	return (0);
 }
