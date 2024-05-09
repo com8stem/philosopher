@@ -10,7 +10,6 @@ void	time_sleep(int time)
 	return ;
 }
 
-
 long	get_time(void)
 {
 	struct timeval	time;
@@ -21,18 +20,16 @@ long	get_time(void)
 
 static void	_one_philo(t_table *info)
 {
-	// printf("[%d]\n", info->philos[0].id);
 	print_thinking(&(info->philos[0]));
 	time_sleep(info->time_to_die);
 	print_dead(&(info->philos[0]));
 	return ;
 }
 
-
 void	start_dinner(t_table *info)
 {
-	int i;
-	t_philo *philo;
+	int		i;
+	t_philo	*philo;
 
 	info->start_time = get_time();
 	i = 0;
@@ -43,12 +40,11 @@ void	start_dinner(t_table *info)
 	}
 	while (i < info->num_of_philo)
 	{
-		philo = &info->philos[i];
-		pthread_create(&philo->thread_id, NULL, life_of_philo, &info->philos[i]);
+		pthread_create(&(&info->philos[i])->thread_id, NULL, life_of_philo,
+			&info->philos[i]);
 		i++;
 	}
 	i = 0;
-	info->start_time = get_time();
 	pthread_create(&info->supreviser, NULL, &monitor_philo, info);
 	pthread_detach(info->supreviser);
 	while (i < info->num_of_philo)
@@ -62,7 +58,7 @@ void	start_dinner(t_table *info)
 
 void	end_dinner(t_table *info)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < info->num_of_philo)
