@@ -29,7 +29,6 @@ static void	_one_philo(t_table *info)
 void	start_dinner(t_table *info)
 {
 	int		i;
-	t_philo	*philo;
 
 	info->start_time = get_time();
 	i = 0;
@@ -40,20 +39,16 @@ void	start_dinner(t_table *info)
 	}
 	while (i < info->num_of_philo)
 	{
-		pthread_create(&(&info->philos[i])->thread_id, NULL, life_of_philo,
-			&info->philos[i]);
+		pthread_create(&info->philos[i].thread_id, NULL, &life_of_philo,
+			(void *)&info->philos[i]);
 		i++;
 	}
 	i = 0;
-	pthread_create(&info->supreviser, NULL, &monitor_philo, info);
-	pthread_detach(info->supreviser);
 	while (i < info->num_of_philo)
 	{
-		philo = &info->philos[i];
-		pthread_join(philo->thread_id, NULL);
+		pthread_join(info->philos[i].thread_id, NULL);
 		i++;
 	}
-	return ;
 }
 
 void	end_dinner(t_table *info)
@@ -66,8 +61,8 @@ void	end_dinner(t_table *info)
 		pthread_mutex_destroy(&info->forks[i]);
 		i++;
 	}
-	pthread_mutex_destroy(&info->death);
-	pthread_mutex_destroy(&info->eat);
+	// pthread_mutex_destroy(&info->death);
+	// pthread_mutex_destroy(&info->eat);
 	pthread_mutex_destroy(&info->timing);
 	return ;
 }

@@ -65,16 +65,16 @@ void	set_fork(t_philo *philo, pthread_mutex_t *forks, int position)
 	int	philo_nbr;
 
 	philo_nbr = philo->table->num_of_philo;
-	if (philo->id % 2 == 0)
-	{
+	// if (philo->id % 2 == 0)
+	// {
 		philo->first_fork = &forks[position];
 		philo->second_fork = &forks[(position + 1) % philo_nbr];
-	}
-	else
-	{
-		philo->first_fork = &forks[(position + 1) % philo_nbr];
-		philo->second_fork = &forks[position];
-	}
+	// }
+	// else
+	// {
+	// 	philo->first_fork = &forks[(position + 1) % philo_nbr];
+	// 	philo->second_fork = &forks[position];
+	// }
 }
 
 void	philo_init(t_table *info)
@@ -89,7 +89,10 @@ void	philo_init(t_table *info)
 		philo->id = i + 1;
 		philo->full = false;
 		philo->meal_count = 0;
+		philo->is_eating = 0;
+		philo->last_meal_time = 0;
 		philo->table = info;
+		philo->time_to_die = info->time_to_die;
 		set_fork(philo, info->forks, i);
 		i++;
 	}
@@ -109,10 +112,7 @@ void	init_philo(char **argv, t_table *info)
 		info->num_of_must_eat = atoi(argv[5]);
 	else
 		info->num_of_must_eat = -1;
-	pthread_mutex_init(&info->death, NULL);
-	pthread_mutex_init(&info->eat, NULL);
 	pthread_mutex_init(&info->timing, NULL);
-	i = 0;
 	while (i < info->num_of_philo)
 	{
 		pthread_mutex_init(&info->forks[i], NULL);

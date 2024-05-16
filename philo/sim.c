@@ -2,55 +2,76 @@
 
 int	take_fork(t_philo *philo)
 {
-	if (pthread_mutex_lock(philo->first_fork) != 0)
-		print_forks(philo);
+	if (philo->id % 2 == 0)
+		pthread_mutex_lock(philo->second_fork);
 	else
-		return (0);
-	if (pthread_mutex_lock(philo->second_fork) != 0)
+		pthread_mutex_lock(philo->first_fork);
+	if (!should_continue(philo))
 		print_forks(philo);
+	if (philo->id % 2 == 0)
+	{
+		if (pthread_mutex_lock(philo->first_fork) != 0)
+			return (pthread_mutex_unlock(philo->second_fork), 1);
+		if (!should_continue(philo))
+			print_forks(philo);
+	}
 	else
-		pthread_mutex_unlock(philo->first_fork);
+	{
+		if (pthread_mutex_lock(philo->second_fork) != 0)
+			return (pthread_mutex_unlock(philo->first_fork), 1);
+		if (!should_continue(philo))
+			print_forks(philo);
+	}
 	return (0);
 }
 
-void	release_forks(t_philo *philo)
+void	eating(t_philo *philo)
 {
+	print_eating(philo);
+	pthread_mutex_lock(&philo->table->timing);
+	philo->last_meal_time = get_time() - philo->table->start_time;
+	philo->time_to_die = philo->last_meal_time + philo->table->time_to_die;
+	pthread_mutex_unlock(&philo->table->timing);
+	time_sleep(philo->table->time_to_eat);
+	pthread_mutex_unlock(&philo->table->timing);
+	if (philo->meal_count != -1)
+		philo->meal_count++;
+	pthread_mutex_unlock(&philo->table->timing);
 	pthread_mutex_unlock(philo->first_fork);
 	pthread_mutex_unlock(philo->second_fork);
 }
 
-static void	mark_last_meal_time(t_philo *philo)
+
+// void	release_forks(t_philo *philo)
+// {
+// 	pthread_mutex_unlock(philo->first_fork);
+// 	pthread_mutex_unlock(philo->second_fork);
+// }
+
+// static void	mark_last_meal_time(t_philo *philo)
+// {
+// 	pthread_mutex_lock(&philo->table->timing);
+// 	philo->last_meal_time = get_time();
+// 	pthread_mutex_unlock(&philo->table->timing);
+// }
+
+// static void	increase_eat_count(t_philo *philo)
+// {
+// 	pthread_mutex_lock(&philo->table->eat);
+// 	philo->meal_count++;
+// 	pthread_mutex_unlock(&philo->table->eat);
+// }
+
+bool	should_continue(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->table->timing);
-	philo->last_meal_time = get_time();
-	pthread_mutex_unlock(&philo->table->timing);
-}
-
-static void	increase_eat_count(t_philo *philo)
-{
-	pthread_mutex_lock(&philo->table->eat);
-	philo->meal_count++;
-	pthread_mutex_unlock(&philo->table->eat);
-}
-
-static bool	check_dead(t_philo *philo)
-{
-	pthread_mutex_lock(&philo->table->death);
-	if (philo->dead == true || philo->table->end_flag == true)
+	if (philo->table->end_flag == 1)
 	{
-		pthread_mutex_unlock(&philo->table->death);
-		return (true);
+		pthread_mutex_unlock(&philo->table->timing);
+		return (1);
 	}
-	pthread_mutex_unlock(&philo->table->death);
-	return (false);
-}
-
-static bool	should_continue(t_philo *philo)
-{
-	if (check_dead(philo) == true
-		|| philo->meal_count == philo->table->num_of_must_eat)
-		return (false);
-	return (true);
+	pthread_mutex_unlock(&philo->table->timing);
+	return (0);
 }
 
 void	get_sleep(t_philo *philo)
@@ -59,52 +80,52 @@ void	get_sleep(t_philo *philo)
 	time_sleep(philo->table->time_to_sleep);
 }
 
-static void	start_delay(t_philo *philo)
-{
-	int	philo_num;
-	int	philo_id;
-	int	time_to_eat;
+// static void	start_delay(t_philo *philo)
+// {
+// 	int	philo_num;
+// 	int	philo_id;
+// 	int	time_to_eat;
 
-	philo_num = philo->table->num_of_philo;
-	philo_id = philo->id;
-	time_to_eat = philo->table->time_to_eat;
-	if (philo_num % 2 == 0 && philo_id % 2 == 0)
-		time_sleep(time_to_eat);
-	else if (philo_num % 2 == 0 && philo_id % 2 != 0)
-		time_sleep(0);
-	else if (philo_num % 2 != 0 && philo_id % 2 == 0)
-		time_sleep((2 * philo_num - philo_id) * time_to_eat / (philo_num - 1));
-	else if (philo_num % 2 != 0 && philo_id % 2 != 0)
-		time_sleep((philo_num - philo_id) * time_to_eat / (philo_num - 1));
-	return ;
-}
+// 	philo_num = philo->table->num_of_philo;
+// 	philo_id = philo->id;
+// 	time_to_eat = philo->table->time_to_eat;
+// 	if (philo_num % 2 == 0 && philo_id % 2 == 0)
+// 		time_sleep(time_to_eat);
+// 	else if (philo_num % 2 == 0 && philo_id % 2 != 0)
+// 		time_sleep(0);
+// 	else if (philo_num % 2 != 0 && philo_id % 2 == 0)
+// 		time_sleep((2 * philo_num - philo_id) * time_to_eat / (philo_num - 1));
+// 	else if (philo_num % 2 != 0 && philo_id % 2 != 0)
+// 		time_sleep((philo_num - philo_id) * time_to_eat / (philo_num - 1));
+// 	return ;
+// }
 
 void	*life_of_philo(void *philo_ptr)
 {
 	t_philo	*philo;
 
 	philo = (t_philo *)philo_ptr;
-	mark_last_meal_time(philo);
-	// if (philo->id % 2 == 0)
-	// 	time_sleep(1);
-	start_delay(philo);
-	while (1)
+	// mark_last_meal_time(philo);
+	while (philo->table->end_flag == 0)
 	{
-		if (should_continue(philo) == false)
+		if (should_continue(philo) == 1)
+			return (NULL);
+		take_fork(philo);
+		if (should_continue(philo) == 1)
+		{
+			pthread_mutex_unlock(philo->first_fork);
+			pthread_mutex_unlock(philo->second_fork);
+			return (NULL);
+		}
+		eating(philo);
+		if (should_continue(philo) == 1)
+			return (NULL);
+		// mark_last_meal_time(philo);
+		time_sleep(philo->table->time_to_sleep);
+		if (should_continue(philo) == 1)
 			return (NULL);
 		print_thinking(philo);
-		if (take_fork(philo) == 1)
-			return (NULL);
-		if (should_continue(philo) == false)
-			return (NULL);
-		print_eating(philo);
-		mark_last_meal_time(philo);
-		time_sleep(philo->table->time_to_sleep); // timetoeat?
-		increase_eat_count(philo);
-		release_forks(philo);
-		if (should_continue(philo) == false)
-			return (NULL);
-		get_sleep(philo);
+		// get_sleep(philo);
 	}
 	return (NULL);
 }
