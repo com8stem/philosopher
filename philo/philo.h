@@ -17,11 +17,13 @@ typedef struct s_philo
 	long				meal_count;
 	int					is_eating;
 	int					time_to_die;
+	int					time_to_eat;
+	int					time_to_sleep;
 	bool				full;
 	long				last_meal_time;
 	// bool				dead;
-	pthread_mutex_t		*first_fork;
-	pthread_mutex_t		*second_fork;
+	pthread_mutex_t		*left_fork;
+	pthread_mutex_t		*right_fork;
 	pthread_t			thread_id;
 	t_table				*table;
 }						t_philo;
@@ -63,6 +65,10 @@ void					time_sleep(int time);
 void					end_dinner(t_table *info);
 
 void					*monitor_philo(void *info_arg);
+
+void	*monitor(t_table *info);
+
+void join_threads(t_table *info);
 
 bool	should_continue(t_philo *philo);
 

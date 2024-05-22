@@ -3,7 +3,7 @@
 
 void print_eating(t_philo *philo)
 {
-	if (!should_continue(philo))
+	if (should_continue(philo))
 	{
 		pthread_mutex_lock(&philo->table->timing);
 		printf("%ld %d is eating\n",
@@ -14,7 +14,7 @@ void print_eating(t_philo *philo)
 
 void print_sleeping(t_philo *philo)
 {
-	if (!should_continue(philo))
+	if (should_continue(philo))
 	{
 		pthread_mutex_lock(&philo->table->timing);
 		printf("%ld %d is sleeping\n",
@@ -26,7 +26,7 @@ void print_sleeping(t_philo *philo)
 
 void print_thinking(t_philo *philo)
 {
-	if (!should_continue(philo))
+	if (should_continue(philo))
 	{
 		pthread_mutex_lock(&philo->table->timing);
 		printf("%ld %d is thinking\n",
@@ -37,7 +37,7 @@ void print_thinking(t_philo *philo)
 
 void print_dead(t_philo *philo)
 {
-	if (!should_continue(philo))
+	if (should_continue(philo))
 	{
 		pthread_mutex_lock(&philo->table->timing);
 		printf("%ld %d died\n",
@@ -48,7 +48,7 @@ void print_dead(t_philo *philo)
 
 void print_forks(t_philo *philo)
 {
-	if (!should_continue(philo))
+	if (should_continue(philo))
 	{
 		pthread_mutex_lock(&philo->table->timing);
 		printf("%ld %d has taken a fork\n",

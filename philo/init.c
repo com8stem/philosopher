@@ -67,13 +67,13 @@ void	set_fork(t_philo *philo, pthread_mutex_t *forks, int position)
 	philo_nbr = philo->table->num_of_philo;
 	// if (philo->id % 2 == 0)
 	// {
-		philo->first_fork = &forks[position];
-		philo->second_fork = &forks[(position + 1) % philo_nbr];
+		philo->left_fork = &forks[position];
+		philo->right_fork = &forks[(position + 1) % philo_nbr];
 	// }
 	// else
 	// {
-	// 	philo->first_fork = &forks[(position + 1) % philo_nbr];
-	// 	philo->second_fork = &forks[position];
+	// 	philo->left_fork = &forks[(position + 1) % philo_nbr];
+	// 	philo->right_fork = &forks[position];
 	// }
 }
 
@@ -93,6 +93,8 @@ void	philo_init(t_table *info)
 		philo->last_meal_time = 0;
 		philo->table = info;
 		philo->time_to_die = info->time_to_die;
+		philo->time_to_eat = info->time_to_eat;
+		philo->time_to_sleep = info->time_to_sleep;
 		set_fork(philo, info->forks, i);
 		i++;
 	}

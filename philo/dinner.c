@@ -61,8 +61,5 @@ void	end_dinner(t_table *info)
 		pthread_mutex_destroy(&info->forks[i]);
 		i++;
 	}
-	// pthread_mutex_destroy(&info->death);
-	// pthread_mutex_destroy(&info->eat);
 	pthread_mutex_destroy(&info->timing);
-	return ;
 }
