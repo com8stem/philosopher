@@ -18,16 +18,15 @@ long	get_time(void)
 	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
 }
 
-
 bool	should_continue(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->table->timing);
+	pthread_mutex_lock(&philo->table->table_lock);
 	if (philo->table->end_flag == 1)
 	{
-		pthread_mutex_unlock(&philo->table->timing);
+		pthread_mutex_unlock(&philo->table->table_lock);
 		return (0);
 	}
-	pthread_mutex_unlock(&philo->table->timing);
+	pthread_mutex_unlock(&philo->table->table_lock);
 	return (1);
 }
 

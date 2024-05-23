@@ -1,6 +1,6 @@
 #include "philo.h"
 
-void join_threads(t_table *info)
+static void _join_threads(t_table *info)
 {
 	int i;
 
@@ -22,7 +22,7 @@ int	main(int argc, char **argv)
 		return (printf("Argument Error\n"));
 	start_dinner(&info);
 	if (info.num_of_philo != 1)
-		join_threads(&info);
+		_join_threads(&info);
 	end_dinner(&info);
 	return (0);
 }

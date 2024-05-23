@@ -38,6 +38,6 @@ void	end_dinner(t_table *info)
 		pthread_mutex_destroy(&info->philos[i].lock);
 		i++;
 	}
-	pthread_mutex_destroy(&info->timing);
+	pthread_mutex_destroy(&info->table_lock);
 	pthread_mutex_destroy(&info->write);
 }

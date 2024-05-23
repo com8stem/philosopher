@@ -1,6 +1,6 @@
 #include "philo.h"
 
-static int	take_fork(t_philo *philo)
+static int	_take_fork(t_philo *philo)
 {
 	if (philo->id % 2 == 0)
 		pthread_mutex_lock(philo->right_fork);
@@ -25,7 +25,7 @@ static int	take_fork(t_philo *philo)
 	return (0);
 }
 
-static void	release_forks(t_philo *philo)
+static void	_release_forks(t_philo *philo)
 {
 	if (philo->id % 2 == 0)
 	{
@@ -39,7 +39,7 @@ static void	release_forks(t_philo *philo)
 	}
 }
 
-static void	eating(t_philo *philo)
+static void	_eating(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->lock);
 	philo->is_eating = 1;
@@ -53,10 +53,10 @@ static void	eating(t_philo *philo)
 	if (philo->meal_count != -1)
 		philo->meal_count++;
 	pthread_mutex_unlock(&philo->lock);
-	release_forks(philo);
+	_release_forks(philo);
 }
 
-static void	start_delay(t_philo *philo)
+static void	_start_delay(t_philo *philo)
 {
 	int	philo_num;
 	int	philo_id;
@@ -83,18 +83,18 @@ void	*philo_routine(void *philo_ptr)
 	philo = (t_philo *)philo_ptr;
 	philo->last_meal_time = get_time();
 	pthread_create(&philo->monitor, NULL, &monitor, (void *)philo);
-	start_delay(philo);
+	_start_delay(philo);
 	while (1)
 	{
 		if (should_continue(philo) == 0)
 			break;
-		take_fork(philo);
+		_take_fork(philo);
 		if (should_continue(philo) == 0)
 		{
-			release_forks(philo);
+			_release_forks(philo);
 			break;
 		}
-		eating(philo);
+		_eating(philo);
 		if (should_continue(philo) == 0)
 			break;
 		get_sleep(philo);
