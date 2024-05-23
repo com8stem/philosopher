@@ -8,9 +8,9 @@ int	main(int argc, char **argv)
 		return (printf("argerror\n"));
 	init_philo(argv, &info);
 	start_dinner(&info);
+	start_monitor(&info);
 	if (info.num_of_philo != 1)
 	{
-		// monitor(&info);
 		join_threads(&info);
 		end_dinner(&info);
 	}

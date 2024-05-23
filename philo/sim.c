@@ -37,8 +37,17 @@ void	eating(t_philo *philo)
 	if (philo->meal_count != -1)
 		philo->meal_count++;
 	pthread_mutex_unlock(&philo->table->timing);
-	pthread_mutex_unlock(philo->left_fork);
-	pthread_mutex_unlock(philo->right_fork);
+	if (philo->id % 2 == 0)
+	{
+		pthread_mutex_unlock(philo->left_fork);
+		pthread_mutex_unlock(philo->right_fork);
+	}
+	else	
+	{
+		pthread_mutex_unlock(philo->left_fork);
+		pthread_mutex_unlock(philo->right_fork);
+
+	}
 }
 
 

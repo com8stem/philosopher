@@ -95,6 +95,7 @@ void	philo_init(t_table *info)
 		philo->time_to_die = info->time_to_die;
 		philo->time_to_eat = info->time_to_eat;
 		philo->time_to_sleep = info->time_to_sleep;
+		pthread_mutex_init(&philo->lock, NULL);
 		set_fork(philo, info->forks, i);
 		i++;
 	}
@@ -109,12 +110,13 @@ void	init_philo(char **argv, t_table *info)
 	info->time_to_die = atoi(argv[2]);
 	info->time_to_eat = atoi(argv[3]);
 	info->time_to_sleep = atoi(argv[4]);
-	info->end_flag = false;
+	info->end_flag = 0;
 	if (argv[5] != NULL)
 		info->num_of_must_eat = atoi(argv[5]);
 	else
 		info->num_of_must_eat = -1;
 	pthread_mutex_init(&info->timing, NULL);
+	pthread_mutex_init(&info->write, NULL);
 	while (i < info->num_of_philo)
 	{
 		pthread_mutex_init(&info->forks[i], NULL);

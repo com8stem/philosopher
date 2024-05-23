@@ -5,6 +5,8 @@ int check_last_meal(t_philo *philo)
 	if (get_time() - philo->table->start_time > philo->table->time_to_die)
 	{
 		philo->table->end_flag = 1;
+		// printf("-------------[%d][]\n", philo->id);
+		// fflush(stdout);
 		print_dead(philo);
 		return (0);
 	}
@@ -26,8 +28,11 @@ int		is_dead(t_table *info)
 	return (0);
 }
 
-void	*monitor(t_table *info)
+void	*monitor(void *arg)
 {
+	t_table *info;
+
+	info = (t_table *)arg;
 	while(1)
 	{
 		pthread_mutex_lock(&info->timing);
@@ -42,6 +47,11 @@ void	*monitor(t_table *info)
 	}
 }
 
+void start_monitor(t_table *info)
+{
+	pthread_create(&info->monitor, NULL, &monitor, (void *)info);
+}
+
 void join_threads(t_table *info)
 {
 	int i;
@@ -52,4 +62,6 @@ void join_threads(t_table *info)
 		pthread_join(info->philos[i].thread_id, NULL);
 		i++;
 	}
+	pthread_join(info->monitor, NULL);
+
 }

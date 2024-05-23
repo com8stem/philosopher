@@ -24,6 +24,7 @@ typedef struct s_philo
 	// bool				dead;
 	pthread_mutex_t		*left_fork;
 	pthread_mutex_t		*right_fork;
+	pthread_mutex_t		lock;
 	pthread_t			thread_id;
 	t_table				*table;
 }						t_philo;
@@ -42,7 +43,8 @@ typedef struct s_table
 	// pthread_mutex_t		eat;
 	// pthread_mutex_t		death;
 	pthread_mutex_t		timing;
-	// pthread_t			supreviser;
+	pthread_mutex_t		write;
+	pthread_t			monitor;
 }						t_table;
 
 bool					check_arg(int argc, char **argv);
@@ -66,7 +68,10 @@ void					end_dinner(t_table *info);
 
 void					*monitor_philo(void *info_arg);
 
-void	*monitor(t_table *info);
+void	*monitor(void *arg);
+
+void start_monitor(t_table *info);
+
 
 void join_threads(t_table *info);
 

@@ -43,12 +43,12 @@ void	start_dinner(t_table *info)
 			(void *)&info->philos[i]);
 		i++;
 	}
-	i = 0;
-	while (i < info->num_of_philo)
-	{
-		pthread_join(info->philos[i].thread_id, NULL);
-		i++;
-	}
+	// i = 0;
+	// while (i < info->num_of_philo)
+	// {
+	// 	pthread_join(info->philos[i].thread_id, NULL);
+	// 	i++;
+	// }
 }
 
 void	end_dinner(t_table *info)
