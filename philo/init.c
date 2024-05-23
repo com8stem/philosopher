@@ -1,30 +1,6 @@
 #include "philo.h"
 
-int	check_over(const char *nb, long num, int sign)
-{
-	long	next_digit;
-
-	if (*nb == '\0' || *nb < '0' || *nb > '9')
-		return (0);
-	next_digit = *nb - '0';
-	if (sign > 0)
-	{
-		if (num > LONG_MAX / 10)
-			return (1);
-		if (num == LONG_MAX / 10 && next_digit > LONG_MAX % 10)
-			return (1);
-	}
-	else if (sign < 0)
-	{
-		if (num * sign < LONG_MIN / 10)
-			return (-1);
-		if (num * sign == LONG_MIN / 10 && next_digit * sign < LONG_MIN % 10)
-			return (-1);
-	}
-	return (0);
-}
-
-int	ft_atoi(const char *str)
+static int	ft_atoi(const char *str)
 {
 	long	num;
 	long	sign;
@@ -49,35 +25,32 @@ int	ft_atoi(const char *str)
 	return ((int)(num * sign));
 }
 
-bool	check_t_philo(t_table *info)
+static bool	check_t_philo(t_table *info)
 {
 	if (info->num_of_philo == -1
 		||info->time_to_die == -1
 		||info->time_to_eat == -1
-		||info->time_to_sleep == -1
-		||info->num_of_must_eat == -1)
+		||info->time_to_sleep == -1)
+		return (false);
+	else if (info->num_of_philo == 0
+		||info->time_to_die == 0
+		||info->time_to_eat == 0
+		||info->time_to_sleep == 0
+		||info->num_of_must_eat == 0)
 		return (false);
 	return (true);
 }
 
-void	set_fork(t_philo *philo, pthread_mutex_t *forks, int position)
+static void	set_fork(t_philo *philo, pthread_mutex_t *forks, int position)
 {
 	int	philo_nbr;
 
 	philo_nbr = philo->table->num_of_philo;
-	// if (philo->id % 2 == 0)
-	// {
-		philo->left_fork = &forks[position];
-		philo->right_fork = &forks[(position + 1) % philo_nbr];
-	// }
-	// else
-	// {
-	// 	philo->left_fork = &forks[(position + 1) % philo_nbr];
-	// 	philo->right_fork = &forks[position];
-	// }
+	philo->left_fork = &forks[position];
+	philo->right_fork = &forks[(position + 1) % philo_nbr];
 }
 
-void	philo_init(t_table *info)
+static void	init_philo(t_table *info)
 {
 	t_philo	*philo;
 	int		i;
@@ -87,7 +60,6 @@ void	philo_init(t_table *info)
 	{
 		philo = &(info->philos[i]);
 		philo->id = i + 1;
-		philo->full = false;
 		philo->dead = false;
 		philo->meal_count = 0;
 		philo->is_eating = 0;
@@ -102,7 +74,7 @@ void	philo_init(t_table *info)
 	}
 }
 
-void	init_philo(char **argv, t_table *info)
+bool	init_data(int argc, char **argv, t_table *info)
 {
 	int		i;
 
@@ -113,10 +85,12 @@ void	init_philo(char **argv, t_table *info)
 	info->time_to_sleep = ft_atoi(argv[4]);
 	info->end_flag = 0;
 	info->num_of_finish = 0;
-	if (argv[5] != NULL)
+	if (argc == 6)
 		info->num_of_must_eat = ft_atoi(argv[5]);
 	else
 		info->num_of_must_eat = -1;
+	if (!check_t_philo(info))
+		return (false);
 	pthread_mutex_init(&info->timing, NULL);
 	pthread_mutex_init(&info->write, NULL);
 	while (i < info->num_of_philo)
@@ -124,5 +98,7 @@ void	init_philo(char **argv, t_table *info)
 		pthread_mutex_init(&info->forks[i], NULL);
 		i++;
 	}
-	philo_init(info);
+	init_philo(info);
+	return (true);
 }
+
