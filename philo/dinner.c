@@ -59,7 +59,9 @@ void	end_dinner(t_table *info)
 	while (i < info->num_of_philo)
 	{
 		pthread_mutex_destroy(&info->forks[i]);
+		pthread_mutex_destroy(&info->philos[i].lock);
 		i++;
 	}
 	pthread_mutex_destroy(&info->timing);
+	pthread_mutex_destroy(&info->write);
 }

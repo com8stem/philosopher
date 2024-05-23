@@ -88,6 +88,7 @@ void	philo_init(t_table *info)
 		philo = &(info->philos[i]);
 		philo->id = i + 1;
 		philo->full = false;
+		philo->dead = false;
 		philo->meal_count = 0;
 		philo->is_eating = 0;
 		philo->last_meal_time = 0;
@@ -106,13 +107,14 @@ void	init_philo(char **argv, t_table *info)
 	int		i;
 
 	i = 0;
-	info->num_of_philo = atoi(argv[1]);
-	info->time_to_die = atoi(argv[2]);
-	info->time_to_eat = atoi(argv[3]);
-	info->time_to_sleep = atoi(argv[4]);
+	info->num_of_philo = ft_atoi(argv[1]);
+	info->time_to_die = ft_atoi(argv[2]);
+	info->time_to_eat = ft_atoi(argv[3]);
+	info->time_to_sleep = ft_atoi(argv[4]);
 	info->end_flag = 0;
+	info->num_of_finish = 0;
 	if (argv[5] != NULL)
-		info->num_of_must_eat = atoi(argv[5]);
+		info->num_of_must_eat = ft_atoi(argv[5]);
 	else
 		info->num_of_must_eat = -1;
 	pthread_mutex_init(&info->timing, NULL);

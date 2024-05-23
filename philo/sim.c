@@ -25,37 +25,38 @@ int	take_fork(t_philo *philo)
 	return (0);
 }
 
-void	eating(t_philo *philo)
+void	release_forks(t_philo *philo)
 {
-	print_eating(philo);
-	pthread_mutex_lock(&philo->table->timing);
-	philo->last_meal_time = get_time() - philo->table->start_time;
-	philo->time_to_die = philo->last_meal_time + philo->table->time_to_die;
-	pthread_mutex_unlock(&philo->table->timing);
-	time_sleep(philo->table->time_to_eat);
-	pthread_mutex_lock(&philo->table->timing);
-	if (philo->meal_count != -1)
-		philo->meal_count++;
-	pthread_mutex_unlock(&philo->table->timing);
 	if (philo->id % 2 == 0)
 	{
 		pthread_mutex_unlock(philo->left_fork);
 		pthread_mutex_unlock(philo->right_fork);
 	}
-	else	
+	else
 	{
-		pthread_mutex_unlock(philo->left_fork);
 		pthread_mutex_unlock(philo->right_fork);
-
+		pthread_mutex_unlock(philo->left_fork);
 	}
 }
 
+void	eating(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->lock);
+	philo->is_eating = 1;
+	print_eating(philo);
+	pthread_mutex_unlock(&philo->lock);
+	time_sleep(philo->table->time_to_eat);
+	pthread_mutex_lock(&philo->lock);
+	philo->last_meal_time = get_time();
+	philo->time_to_die = philo->last_meal_time + philo->table->time_to_die;
+	philo->is_eating = 0;
+	if (philo->meal_count != -1)
+		philo->meal_count++;
+	pthread_mutex_unlock(&philo->lock);
+	release_forks(philo);
+}
 
-// void	release_forks(t_philo *philo)
-// {
-// 	pthread_mutex_unlock(philo->left_fork);
-// 	pthread_mutex_unlock(philo->right_fork);
-// }
+
 
 // static void	mark_last_meal_time(t_philo *philo)
 // {
@@ -114,25 +115,28 @@ void	*life_of_philo(void *philo_ptr)
 	t_philo	*philo;
 
 	philo = (t_philo *)philo_ptr;
+	philo->last_meal_time = get_time();
 	start_delay(philo);
-	while (philo->table->end_flag == 0)
+	pthread_create(&philo->monitor, NULL, &monitor, (void *)philo);
+	while (1)
 	{
 		if (should_continue(philo) == 0)
-			return (0);
+			break;
 		take_fork(philo);
 		if (should_continue(philo) == 0)
 		{
-			pthread_mutex_unlock(philo->left_fork);
-			pthread_mutex_unlock(philo->right_fork);
-			return (NULL);
+			release_forks(philo);
+			break;
 		}
 		eating(philo);
-		if (should_continue(philo) == 0 || philo->meal_count == philo->table->num_of_must_eat)
-			return (NULL);
+		if (should_continue(philo) == 0)
+			break;
+		print_sleeping(philo);
 		time_sleep(philo->table->time_to_sleep);
 		if (should_continue(philo) == 0)
-			return (NULL);
+			break;
 		print_thinking(philo);
 	}
+	pthread_join(philo->monitor, NULL);
 	return (NULL);
 }
