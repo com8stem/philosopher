@@ -6,7 +6,7 @@
 /*   By: kishizu <kishizu@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 17:24:31 by kishizu           #+#    #+#             */
-/*   Updated: 2024/05/25 17:25:34 by kishizu          ###   ########.fr       */
+/*   Updated: 2024/05/25 17:42:36 by kishizu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	start_dinner(t_table *info)
 	}
 	while (i < info->num_of_philo)
 	{
-		pthread_create(&info->philos[i].thread_id, NULL, &philo_routine,
+		pthread_create(&info->philos[i].thread_id, NULL, &start_philo,
 			(void *)&info->philos[i]);
 		i++;
 	}

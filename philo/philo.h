@@ -6,7 +6,7 @@
 /*   By: kishizu <kishizu@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 17:24:41 by kishizu           #+#    #+#             */
-/*   Updated: 2024/05/25 17:24:42 by kishizu          ###   ########.fr       */
+/*   Updated: 2024/05/25 17:47:19 by kishizu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,8 @@ void					print_thinking(t_philo *philo);
 void					print_dead(t_philo *philo);
 void					print_forks(t_philo *philo);
 
-void					*philo_routine(void *philo_ptr);
+void					*start_philo(void *philo_ptr);
+void					routine(t_philo *philo);
 void					*monitor(void *arg);
 
 long					get_time(void);
