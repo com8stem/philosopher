@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   simlation.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kishizu <kishizu@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/25 17:24:46 by kishizu           #+#    #+#             */
+/*   Updated: 2024/05/25 17:29:37 by kishizu          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 static int	_take_fork(t_philo *philo)
@@ -13,14 +25,14 @@ static int	_take_fork(t_philo *philo)
 		if (pthread_mutex_lock(philo->left_fork) != 0)
 			return (pthread_mutex_unlock(philo->right_fork), 1);
 		if (should_continue(philo) == 1)
-		print_forks(philo);
+			print_forks(philo);
 	}
 	else
 	{
 		if (pthread_mutex_lock(philo->right_fork) != 0)
 			return (pthread_mutex_unlock(philo->left_fork), 1);
 		if (should_continue(philo) == 1)
-		print_forks(philo);
+			print_forks(philo);
 	}
 	return (0);
 }
@@ -81,29 +93,27 @@ void	*philo_routine(void *philo_ptr)
 	t_philo	*philo;
 
 	philo = (t_philo *)philo_ptr;
-	// print_thinking(philo);
 	philo->last_meal_time = get_time();
 	pthread_create(&philo->monitor, NULL, &monitor, (void *)philo);
 	_start_delay(philo);
 	while (1)
 	{
 		if (should_continue(philo) == 0)
-			break;
+			break ;
 		_take_fork(philo);
 		if (should_continue(philo) == 0)
 		{
 			_release_forks(philo);
-			break;
+			break ;
 		}
 		_eating(philo);
 		if (should_continue(philo) == 0)
-			break;
+			break ;
 		get_sleep(philo);
 		if (should_continue(philo) == 0)
-			break;
+			break ;
 		print_thinking(philo);
 	}
 	pthread_join(philo->monitor, NULL);
-	// pthread_detach(philo->monitor);
 	return (NULL);
 }

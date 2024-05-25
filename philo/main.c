@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kishizu <kishizu@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/25 17:24:36 by kishizu           #+#    #+#             */
+/*   Updated: 2024/05/25 17:27:34 by kishizu          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
-static void _join_threads(t_table *info)
+static void	_join_threads(t_table *info)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < info->num_of_philo)
@@ -14,7 +26,7 @@ static void _join_threads(t_table *info)
 
 int	main(int argc, char **argv)
 {
-	t_table info;
+	t_table	info;
 
 	if (!check_arg(argc, argv))
 		return (printf("Argument Error\n"));

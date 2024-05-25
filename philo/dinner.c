@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   dinner.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kishizu <kishizu@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/25 17:24:31 by kishizu           #+#    #+#             */
+/*   Updated: 2024/05/25 17:25:34 by kishizu          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 static void	_one_philo(t_table *info)
 {
-	print_thinking(&(info->philos[0]));
+	print_forks(&(info->philos[0]));
 	time_sleep(info->time_to_die);
 	print_dead(&(info->philos[0]));
 	return ;
