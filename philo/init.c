@@ -68,8 +68,8 @@ static void	_init_philo(t_table *info)
 		philo->time_to_eat = info->time_to_eat;
 		philo->time_to_sleep = info->time_to_sleep;
 		pthread_mutex_init(&philo->lock, NULL);
-		_set_fork(philo, info->forks, i);
 		philo->table = info;
+		_set_fork(philo, info->forks, i);
 		i++;
 	}
 }

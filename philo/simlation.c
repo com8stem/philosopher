@@ -81,6 +81,7 @@ void	*philo_routine(void *philo_ptr)
 	t_philo	*philo;
 
 	philo = (t_philo *)philo_ptr;
+	// print_thinking(philo);
 	philo->last_meal_time = get_time();
 	pthread_create(&philo->monitor, NULL, &monitor, (void *)philo);
 	_start_delay(philo);
