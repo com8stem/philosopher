@@ -18,7 +18,7 @@ void	time_sleep(int time)
 
 	start_time = get_time();
 	while ((get_time() - start_time) < time)
-		usleep(150);
+		usleep(100);
 	return ;
 }
 

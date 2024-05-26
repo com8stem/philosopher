@@ -67,6 +67,7 @@ void	*monitor(void *arg)
 	{
 		if (_is_dead(philo) == 1)
 			return (NULL);
+		time_sleep(philo->table->time_to_die / 10);
 	}
 	return (NULL);
 }

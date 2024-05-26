@@ -21,14 +21,16 @@ static void	_start_delay(t_philo *philo)
 	philo_num = philo->table->num_of_philo;
 	philo_id = philo->id;
 	time_to_eat = philo->table->time_to_eat;
-	if (philo_num % 2 == 0 && philo_id % 2 == 0)
-		time_sleep(time_to_eat);
-	else if (philo_num % 2 == 0 && philo_id % 2 != 0)
-		time_sleep(0);
-	else if (philo_num % 2 != 0 && philo_id % 2 == 0)
-		time_sleep((2 * philo_num - philo_id) * time_to_eat / (philo_num - 1));
-	else if (philo_num % 2 != 0 && philo_id % 2 != 0)
-		time_sleep((philo_num - philo_id) * time_to_eat / (philo_num - 1));
+	if (philo_num % 2 == 0)
+	{
+		if (philo_id % 2 == 0)
+			time_sleep(time_to_eat);
+	}
+	else
+		if (philo_id % 2 == 0)
+			time_sleep((2 * philo_num - philo_id) * time_to_eat / (philo_num - 1));
+		else
+			time_sleep((philo_num - philo_id) * time_to_eat / (philo_num - 1));
 	return ;
 }
 
@@ -38,8 +40,8 @@ void	*start_philo(void *philo_ptr)
 
 	philo = (t_philo *)philo_ptr;
 	philo->last_meal_time = get_time();
-	pthread_create(&philo->monitor, NULL, &monitor, (void *)philo);
 	_start_delay(philo);
+	pthread_create(&philo->monitor, NULL, &monitor, (void *)philo);
 	routine(philo);
 	pthread_join(philo->monitor, NULL);
 	return (NULL);

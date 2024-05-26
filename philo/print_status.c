@@ -47,9 +47,8 @@ void	print_thinking(t_philo *philo)
 
 void	print_dead(t_philo *philo)
 {
-	static int	i;
+	static int	i = 0;
 
-	i = 0;
 	pthread_mutex_lock(&philo->table->write);
 	if (i == 0)
 	{
