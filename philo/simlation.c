@@ -27,10 +27,14 @@ static void	_start_delay(t_philo *philo)
 			time_sleep(time_to_eat);
 	}
 	else
+	{
 		if (philo_id % 2 == 0)
-			time_sleep((2 * philo_num - philo_id) * time_to_eat / (philo_num - 1));
+			time_sleep((2 * philo_num - philo_id)
+				* time_to_eat / (philo_num - 1));
 		else
-			time_sleep((philo_num - philo_id) * time_to_eat / (philo_num - 1));
+			time_sleep((philo_num - philo_id)
+				* time_to_eat / (philo_num - 1));
+	}
 	return ;
 }
 
