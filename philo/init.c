@@ -6,7 +6,7 @@
 /*   By: kishizu <kishizu@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 17:24:33 by kishizu           #+#    #+#             */
-/*   Updated: 2024/05/25 17:24:35 by kishizu          ###   ########.fr       */
+/*   Updated: 2024/05/31 18:58:05 by kishizu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,60 +37,8 @@ static int	_ft_atoi(const char *str)
 	return ((int)(num * sign));
 }
 
-static bool	_check_t_philo(t_table *info)
+static void	init_table(int argc, char **argv, t_table *info)
 {
-	if (info->num_of_philo == -1
-		||info->time_to_die == -1
-		||info->time_to_eat == -1
-		||info->time_to_sleep == -1)
-		return (false);
-	else if (info->num_of_philo == 0
-		||info->time_to_die == 0
-		||info->time_to_eat == 0
-		||info->time_to_sleep == 0
-		||info->num_of_must_eat == 0)
-		return (false);
-	return (true);
-}
-
-static void	_set_fork(t_philo *philo, pthread_mutex_t *forks, int position)
-{
-	int	philo_nbr;
-
-	philo_nbr = philo->table->num_of_philo;
-	philo->left_fork = &forks[position];
-	philo->right_fork = &forks[(position + 1) % philo_nbr];
-}
-
-static void	_init_philo(t_table *info)
-{
-	t_philo	*philo;
-	int		i;
-
-	i = 0;
-	while (i < info->num_of_philo)
-	{
-		philo = &(info->philos[i]);
-		philo->id = i + 1;
-		philo->is_eating = 0;
-		philo->dead = false;
-		philo->meal_count = 0;
-		philo->last_meal_time = 0;
-		philo->time_to_die = info->time_to_die;
-		philo->time_to_eat = info->time_to_eat;
-		philo->time_to_sleep = info->time_to_sleep;
-		pthread_mutex_init(&philo->lock, NULL);
-		philo->table = info;
-		_set_fork(philo, info->forks, i);
-		i++;
-	}
-}
-
-bool	init_data(int argc, char **argv, t_table *info)
-{
-	int		i;
-
-	i = 0;
 	info->num_of_philo = _ft_atoi(argv[1]);
 	info->time_to_die = _ft_atoi(argv[2]);
 	info->time_to_eat = _ft_atoi(argv[3]);
@@ -101,15 +49,39 @@ bool	init_data(int argc, char **argv, t_table *info)
 		info->num_of_must_eat = _ft_atoi(argv[5]);
 	else
 		info->num_of_must_eat = -1;
+}
+
+static bool	_check_t_philo(t_table *info)
+{
+	if (info->num_of_philo == -1 || info->time_to_die == -1
+		|| info->time_to_eat == -1 || info->time_to_sleep == -1)
+		return (false);
+	else if (info->num_of_philo == 0 || info->time_to_die == 0
+		|| info->time_to_eat == 0 || info->time_to_sleep == 0
+		|| info->num_of_must_eat == 0)
+		return (false);
+	return (true);
+}
+
+bool	init_data(int argc, char **argv, t_table *info)
+{
+	int	i;
+
+	i = 0;
+	init_table(argc, argv, info);
 	if (!_check_t_philo(info))
 		return (false);
-	pthread_mutex_init(&info->table_lock, NULL);
-	pthread_mutex_init(&info->write, NULL);
+	if (pthread_mutex_init(&info->table_lock, NULL) != 0)
+		return (false);
+	if (pthread_mutex_init(&info->write, NULL) != 0)
+		return (error_destroy_mutex(&info->table_lock));
 	while (i < info->num_of_philo)
 	{
-		pthread_mutex_init(&info->forks[i], NULL);
+		if (pthread_mutex_init(&info->forks[i], NULL) != 0)
+			return (error_destroy_mutex_fork(info, i));
 		i++;
 	}
-	_init_philo(info);
+	if (init_philo(info) == false)
+		return (error_destroy_mutex_fork(info, i));
 	return (true);
 }

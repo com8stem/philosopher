@@ -6,7 +6,7 @@
 /*   By: kishizu <kishizu@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 17:24:41 by kishizu           #+#    #+#             */
-/*   Updated: 2024/05/25 17:47:19 by kishizu          ###   ########.fr       */
+/*   Updated: 2024/05/31 18:58:26 by kishizu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,10 @@ bool					check_arg(int argc, char **argv);
 bool					init_data(int argc, char **argv, t_table *info);
 void					start_dinner(t_table *info);
 void					end_dinner(t_table *info);
+
+bool					init_philo(t_table *info);
+bool					error_destroy_mutex(pthread_mutex_t *mutex);
+bool					error_destroy_mutex_fork(t_table *info, int i);
 
 void					print_eating(t_philo *philo);
 void					print_sleeping(t_philo *philo);
