@@ -1,5 +1,5 @@
 NAME = philo
-SRCS = check_arg.c dinner.c init.c init_2.c main.c monitor.c print_status.c simlation.c simulation_2.c utils_sleep.c
+SRCS = check_arg.c dinner.c init.c init_2.c main.c monitor.c print_status.c simulation.c simulation_2.c utils_sleep.c
 OBJS = $(SRCS:.c=.o)
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -pthread #-fsanitize=thread
