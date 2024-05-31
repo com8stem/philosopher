@@ -43,7 +43,7 @@ static void	init_table(int argc, char **argv, t_table *info)
 	info->time_to_die = _ft_atoi(argv[2]);
 	info->time_to_eat = _ft_atoi(argv[3]);
 	info->time_to_sleep = _ft_atoi(argv[4]);
-	info->end_flag = 0;
+	info->end_flag = false;
 	info->num_of_finish = 0;
 	if (argc == 6)
 		info->num_of_must_eat = _ft_atoi(argv[5]);

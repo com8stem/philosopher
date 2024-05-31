@@ -21,9 +21,9 @@ static void	_unlock_tablelock_and_lock(t_philo *philo)
 static int	_dead_case(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->table->table_lock);
+	print_dead(philo);
 	philo->table->end_flag = 1;
 	pthread_mutex_unlock(&philo->table->table_lock);
-	print_dead(philo);
 	pthread_mutex_unlock(&philo->lock);
 	return (0);
 }
@@ -66,7 +66,9 @@ void	*monitor(void *arg)
 	while (1)
 	{
 		if (_is_dead(philo) == 1)
+		{
 			return (NULL);
+		}
 		time_sleep(philo->table->time_to_die / 10);
 	}
 	return (NULL);

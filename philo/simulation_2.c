@@ -72,19 +72,19 @@ void	routine(t_philo *philo)
 {
 	while (1)
 	{
-		if (should_continue(philo) == 0)
+		if (should_continue(philo) == false)
 			return ;
 		_take_fork(philo);
-		if (should_continue(philo) == 0)
+		if (should_continue(philo) == false)
 		{
 			_release_forks(philo);
 			return ;
 		}
 		_eating(philo);
-		if (should_continue(philo) == 0)
+		if (should_continue(philo) == false)
 			return ;
 		get_sleep(philo);
-		if (should_continue(philo) == 0)
+		if (should_continue(philo) == false)
 			return ;
 		print_thinking(philo);
 	}

@@ -33,13 +33,13 @@ long	get_time(void)
 bool	should_continue(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->table->table_lock);
-	if (philo->table->end_flag == 1)
+	if (philo->table->end_flag == true)
 	{
 		pthread_mutex_unlock(&philo->table->table_lock);
-		return (0);
+		return (false);
 	}
 	pthread_mutex_unlock(&philo->table->table_lock);
-	return (1);
+	return (true);
 }
 
 void	get_sleep(t_philo *philo)
