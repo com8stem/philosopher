@@ -6,7 +6,7 @@
 /*   By: kishizu <kishizu@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 17:24:39 by kishizu           #+#    #+#             */
-/*   Updated: 2024/05/25 17:40:13 by kishizu          ###   ########.fr       */
+/*   Updated: 2024/06/01 19:50:00 by kishizu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	*monitor(void *arg)
 		{
 			return (NULL);
 		}
-		time_sleep(philo->table->time_to_die / 10);
+		time_sleep(philo->table->time_to_die / 5);
 	}
 	return (NULL);
 }
