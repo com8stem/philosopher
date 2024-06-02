@@ -60,6 +60,8 @@ static bool	_check_t_philo(t_table *info)
 		|| info->time_to_eat == 0 || info->time_to_sleep == 0
 		|| info->num_of_must_eat == 0)
 		return (false);
+	else if (info->num_of_philo > 200)
+		return (false);
 	return (true);
 }
 
