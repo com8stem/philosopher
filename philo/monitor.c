@@ -69,7 +69,7 @@ void	*monitor(void *arg)
 		{
 			return (NULL);
 		}
-		time_sleep(philo->table->time_to_die / 5);
+		time_sleep(philo->table->time_to_die / 10);
 	}
 	return (NULL);
 }
