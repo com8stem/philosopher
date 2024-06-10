@@ -6,7 +6,7 @@
 /*   By: kishizu <kishizu@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 18:29:57 by kishizu           #+#    #+#             */
-/*   Updated: 2024/05/31 18:58:47 by kishizu          ###   ########.fr       */
+/*   Updated: 2024/06/10 18:33:16 by kishizu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ bool	init_philo(t_table *info)
 		philo->is_eating = 0;
 		philo->dead = false;
 		philo->meal_count = 0;
+		philo->full = false;
 		philo->last_meal_time = 0;
 		philo->time_to_die = info->time_to_die;
 		philo->time_to_eat = info->time_to_eat;

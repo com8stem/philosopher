@@ -6,7 +6,7 @@
 /*   By: kishizu <kishizu@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 17:24:39 by kishizu           #+#    #+#             */
-/*   Updated: 2024/06/01 19:50:00 by kishizu          ###   ########.fr       */
+/*   Updated: 2024/06/10 20:00:14 by kishizu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,21 +34,24 @@ static int	_check_last_meal(t_philo *philo)
 	if (get_time() - philo->last_meal_time >= philo->table->time_to_die
 		&& philo->is_eating == 0)
 		return (_dead_case(philo));
-	if (philo->meal_count == philo->table->num_of_must_eat)
+	if (philo->table->num_of_must_eat > 0
+		&& philo->meal_count >= philo->table->num_of_must_eat
+		&& philo->full == false)
 	{
+		philo->full = true;
 		pthread_mutex_lock(&philo->table->table_lock);
 		philo->table->num_of_finish++;
-		if (philo->table->num_of_finish == philo->table->num_of_philo)
+		if (philo->table->num_of_finish >= philo->table->num_of_philo)
 		{
 			philo->table->end_flag = 1;
 			_unlock_tablelock_and_lock(philo);
-			return (0);
+			return (FINISH);
 		}
 		_unlock_tablelock_and_lock(philo);
-		return (0);
+		return (CONTINUE);
 	}
 	pthread_mutex_unlock(&philo->lock);
-	return (1);
+	return (CONTINUE);
 }
 
 static bool	_is_dead(t_philo *philo)
@@ -58,18 +61,23 @@ static bool	_is_dead(t_philo *philo)
 	return (false);
 }
 
-void	*monitor(void *arg)
+void	*monitor(t_table *info)
 {
 	t_philo	*philo;
+	int		i;
 
-	philo = (t_philo *)arg;
+	i = 0;
+	time_sleep(10);
 	while (1)
 	{
+		philo = &info->philos[i];
 		if (_is_dead(philo) == 1)
 		{
 			return (NULL);
 		}
-		time_sleep(philo->table->time_to_die / 10);
+		i++;
+		if (i == info->num_of_philo)
+			i = 0;
 	}
 	return (NULL);
 }

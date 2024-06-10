@@ -6,7 +6,7 @@
 /*   By: kishizu <kishizu@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 17:24:41 by kishizu           #+#    #+#             */
-/*   Updated: 2024/05/31 18:58:26 by kishizu          ###   ########.fr       */
+/*   Updated: 2024/06/10 18:32:55 by kishizu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,9 @@
 # include <sys/time.h>
 # include <unistd.h>
 
+# define FINISH 0
+# define CONTINUE 1
+
 typedef struct s_table	t_table;
 
 typedef struct s_philo
@@ -29,6 +32,7 @@ typedef struct s_philo
 	int					is_eating;
 	bool				dead;
 	long				meal_count;
+	bool				full;
 	long				last_meal_time;
 	int					time_to_die;
 	int					time_to_eat;
@@ -75,7 +79,7 @@ void					print_forks(t_philo *philo);
 
 void					*start_philo(void *philo_ptr);
 void					routine(t_philo *philo);
-void					*monitor(void *arg);
+void					*monitor(t_table *arg);
 
 long					get_time(void);
 bool					should_continue(t_philo *philo);

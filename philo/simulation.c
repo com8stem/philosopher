@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   simlation.c                                        :+:      :+:    :+:   */
+/*   simulation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kishizu <kishizu@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 17:24:46 by kishizu           #+#    #+#             */
-/*   Updated: 2024/05/25 17:53:04 by kishizu          ###   ########.fr       */
+/*   Updated: 2024/06/10 19:48:16 by kishizu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,6 @@ void	*start_philo(void *philo_ptr)
 	philo = (t_philo *)philo_ptr;
 	philo->last_meal_time = get_time();
 	_start_delay(philo);
-	pthread_create(&philo->monitor, NULL, &monitor, (void *)philo);
 	routine(philo);
-	pthread_join(philo->monitor, NULL);
 	return (NULL);
 }
