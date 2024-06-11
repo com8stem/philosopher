@@ -14,17 +14,36 @@
 
 static int	_take_fork(t_philo *philo)
 {
-	pthread_mutex_lock(philo->right_fork);
-	print_forks(philo);
-	pthread_mutex_lock(philo->left_fork);
-	print_forks(philo);
-	return (0);
+	if (philo->id % 2 == 0)
+	{
+		pthread_mutex_lock(philo->left_fork);
+		print_forks(philo);
+		pthread_mutex_lock(philo->right_fork);
+		print_forks(philo);
+		return (0);
+	}
+	else
+	{
+		pthread_mutex_lock(philo->right_fork);
+		print_forks(philo);
+		pthread_mutex_lock(philo->left_fork);
+		print_forks(philo);
+		return (0);
+	}
 }
 
 static void	_release_forks(t_philo *philo)
 {
-	pthread_mutex_unlock(philo->left_fork);
-	pthread_mutex_unlock(philo->right_fork);
+	if (philo->id % 2 == 0)
+	{
+		pthread_mutex_unlock(philo->right_fork);
+		pthread_mutex_unlock(philo->left_fork);
+	}
+	else
+	{
+		pthread_mutex_unlock(philo->left_fork);
+		pthread_mutex_unlock(philo->right_fork);
+	}
 }
 
 static void	_eating(t_philo *philo)
