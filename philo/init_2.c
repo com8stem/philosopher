@@ -6,7 +6,7 @@
 /*   By: kishizu <kishizu@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 18:29:57 by kishizu           #+#    #+#             */
-/*   Updated: 2024/06/10 18:33:16 by kishizu          ###   ########.fr       */
+/*   Updated: 2024/06/12 21:59:31 by kishizu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,18 +62,11 @@ bool	init_philo(t_table *info)
 	return (true);
 }
 
-bool	error_destroy_mutex(pthread_mutex_t *mutex)
-{
-	pthread_mutex_destroy(mutex);
-	return (false);
-}
-
 bool	error_destroy_mutex_fork(t_table *info, int i)
 {
 	i = i - 1;
 	while (i >= 0)
 		pthread_mutex_destroy(&info->forks[i]);
 	pthread_mutex_destroy(&info->table_lock);
-	pthread_mutex_destroy(&info->write);
 	return (false);
 }

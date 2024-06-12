@@ -6,7 +6,7 @@
 /*   By: kishizu <kishizu@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 17:24:33 by kishizu           #+#    #+#             */
-/*   Updated: 2024/05/31 18:58:05 by kishizu          ###   ########.fr       */
+/*   Updated: 2024/06/12 21:59:06 by kishizu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,6 @@ bool	init_data(int argc, char **argv, t_table *info)
 		return (false);
 	if (pthread_mutex_init(&info->table_lock, NULL) != 0)
 		return (false);
-	if (pthread_mutex_init(&info->write, NULL) != 0)
-		return (error_destroy_mutex(&info->table_lock));
 	while (i < info->num_of_philo)
 	{
 		if (pthread_mutex_init(&info->forks[i], NULL) != 0)

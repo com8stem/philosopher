@@ -6,7 +6,7 @@
 /*   By: kishizu <kishizu@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 17:24:41 by kishizu           #+#    #+#             */
-/*   Updated: 2024/06/10 18:32:55 by kishizu          ###   ########.fr       */
+/*   Updated: 2024/06/12 21:59:43 by kishizu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ typedef struct s_table
 	pthread_mutex_t		forks[201];
 	t_philo				philos[201];
 	pthread_mutex_t		table_lock;
-	pthread_mutex_t		write;
 	pthread_t			monitor;
 }						t_table;
 

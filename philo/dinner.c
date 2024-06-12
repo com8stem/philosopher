@@ -6,7 +6,7 @@
 /*   By: kishizu <kishizu@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 17:24:31 by kishizu           #+#    #+#             */
-/*   Updated: 2024/06/10 17:54:05 by kishizu          ###   ########.fr       */
+/*   Updated: 2024/06/12 22:00:00 by kishizu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,5 +52,4 @@ void	end_dinner(t_table *info)
 		i++;
 	}
 	pthread_mutex_destroy(&info->table_lock);
-	pthread_mutex_destroy(&info->write);
 }

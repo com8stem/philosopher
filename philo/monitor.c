@@ -6,7 +6,7 @@
 /*   By: kishizu <kishizu@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 17:24:39 by kishizu           #+#    #+#             */
-/*   Updated: 2024/06/10 20:00:14 by kishizu          ###   ########.fr       */
+/*   Updated: 2024/06/12 21:53:54 by kishizu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ void	*monitor(t_table *info)
 		i++;
 		if (i == info->num_of_philo)
 			i = 0;
+		usleep(1);
 	}
 	return (NULL);
 }
