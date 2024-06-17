@@ -55,7 +55,7 @@ static void	_eating(t_philo *philo)
 	pthread_mutex_unlock(&philo->lock);
 	time_sleep(philo->table->time_to_eat);
 	pthread_mutex_lock(&philo->lock);
-	philo->time_to_die = philo->last_meal_time + philo->table->time_to_die;
+	// philo->time_to_die = philo->last_meal_time + philo->table->time_to_die;
 	philo->is_eating = 0;
 	if (philo->meal_count != -1)
 		philo->meal_count++;

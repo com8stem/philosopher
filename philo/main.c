@@ -22,6 +22,7 @@ static void	_join_threads(t_table *info)
 		pthread_join(info->philos[i].thread_id, NULL);
 		i++;
 	}
+	pthread_join(info->monitor, NULL);
 }
 
 int	main(int argc, char **argv)

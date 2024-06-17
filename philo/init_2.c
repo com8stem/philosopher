@@ -49,7 +49,7 @@ bool	init_philo(t_table *info)
 		philo->dead = false;
 		philo->meal_count = 0;
 		philo->full = false;
-		philo->last_meal_time = 0;
+		philo->last_meal_time = -1;
 		philo->time_to_die = info->time_to_die;
 		philo->time_to_eat = info->time_to_eat;
 		philo->time_to_sleep = info->time_to_sleep;

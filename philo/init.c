@@ -75,6 +75,11 @@ bool	init_data(int argc, char **argv, t_table *info)
 		return (false);
 	if (pthread_mutex_init(&info->table_lock, NULL) != 0)
 		return (false);
+	// if (pthread_mutex_init(&info->end_flag_lock, NULL) != 0)
+	// {
+	// 	pthread_mutex_destroy(&info->table_lock);
+	// 	return (false);
+	// }
 	while (i < info->num_of_philo)
 	{
 		if (pthread_mutex_init(&info->forks[i], NULL) != 0)

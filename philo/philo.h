@@ -58,6 +58,7 @@ typedef struct s_table
 	pthread_mutex_t		forks[201];
 	t_philo				philos[201];
 	pthread_mutex_t		table_lock;
+	pthread_mutex_t		end_flag_lock;
 	pthread_t			monitor;
 }						t_table;
 
@@ -78,7 +79,7 @@ void					print_forks(t_philo *philo);
 
 void					*start_philo(void *philo_ptr);
 void					routine(t_philo *philo);
-void					*monitor(t_table *arg);
+void					*monitor(void *arg);
 
 long					get_time(void);
 bool					should_continue(t_philo *philo);
