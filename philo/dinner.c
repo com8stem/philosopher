@@ -6,7 +6,7 @@
 /*   By: kishizu <kishizu@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 17:24:31 by kishizu           #+#    #+#             */
-/*   Updated: 2024/06/12 22:00:00 by kishizu          ###   ########.fr       */
+/*   Updated: 2024/06/19 19:34:14 by kishizu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ void	start_dinner(t_table *info)
 		time = get_time();
 	}
 	pthread_create(&info->monitor, NULL, &monitor, (void *)info);
-	// monitor(info);
 }
 
 void	end_dinner(t_table *info)
@@ -61,5 +60,4 @@ void	end_dinner(t_table *info)
 		i++;
 	}
 	pthread_mutex_destroy(&info->table_lock);
-	// pthread_mutex_destroy(&info->end_flag_lock);
 }
